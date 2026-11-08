@@ -22,7 +22,8 @@ def test_publish_commands_keep_the_token_in_the_environment(tmp_path):
     (stage / "404.html").write_text("missing", encoding="utf-8")
     seen = []
 
-    def runner(cmd, cwd, env, capture_output, text):
+    def runner(cmd, cwd, env, capture_output, text, timeout=None):
+        assert timeout and timeout > 0
         seen.append((list(cmd), env, cwd))
         assert token not in " ".join(cmd)
         assert token not in cwd

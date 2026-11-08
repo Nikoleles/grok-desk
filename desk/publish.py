@@ -107,6 +107,9 @@ def _askpass(path: Path):
     path.chmod(0o700)
 
 
+GIT_TIMEOUT_S = 90
+
+
 def publish_tree(stage: Path, repo: str, token: str, branch: str = "gh-pages", runner=None):
     """Force-push an orphan single-commit branch. `token` is only placed in env."""
     if not token:
@@ -145,7 +148,11 @@ def publish_tree(stage: Path, repo: str, token: str, branch: str = "gh-pages", r
             joined = " ".join(cmd)
             if token in joined:
                 raise RuntimeError("refusing to pass the token on the command line")
-            result = run(cmd, cwd=str(work), env=env, capture_output=True, text=True)
+            try:
+                result = run(cmd, cwd=str(work), env=env, capture_output=True, text=True, timeout=GIT_TIMEOUT_S)
+            except subprocess.TimeoutExpired:
+                log.info("git timeout cmd=%s", cmd[1] if len(cmd) > 1 else "?")
+                raise RuntimeError(f"git timed out after {GIT_TIMEOUT_S}s")
             stdout = redact(getattr(result, "stdout", "") or "")
             stderr = redact(getattr(result, "stderr", "") or "")
             code = getattr(result, "returncode", 0)

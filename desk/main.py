@@ -85,7 +85,10 @@ async def _writer(db, cfg, clock, sources):
             write_snapshot(db, cfg.output_dir, cfg.data_path, cfg.web_dir, clock)
             interval = float(db.get_setting("desk.publish_interval_s") or 360)
             if cfg.gh_token and (clock.now() - last_publish).total_seconds() >= interval:
-                publish_tree(cfg.output_dir, cfg.gh_repo, cfg.gh_token)
+                # git runs in a worker thread so a slow or hung push can never
+                # freeze the event loop (and every agent's heartbeat with it).
+                last_publish = clock.now()
+                await asyncio.to_thread(publish_tree, cfg.output_dir, cfg.gh_repo, cfg.gh_token)
                 last_publish = clock.now()
         except Exception as exc:
             log.info("writer %s", type(exc).__name__)
