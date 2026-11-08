@@ -1,0 +1,71 @@
+{
+  "chainId": "solana",
+  "dexId": "pumpswap",
+  "url": "https://dexscreener.com/solana/aluywhhvv5dajncyru5hzzb7omyhq9je52n5yraubtek",
+  "pairAddress": "ALUywhhvV5DaJncyru5HzzB7oMyhq9jE52n5yRAuBTEk",
+  "baseToken": {
+    "address": "DDDfDJGreM6pYbKEiB8NqkZ3RhgG9Q1zKK58SvcHpump",
+    "name": "Jason Duval",
+    "symbol": "JASON"
+  },
+  "quoteToken": {
+    "address": "So11111111111111111111111111111111111111112",
+    "name": "Wrapped SOL",
+    "symbol": "SOL"
+  },
+  "priceNative": "0.000002153",
+  "priceUsd": "0.0001927",
+  "txns": {
+    "m5": {
+      "buys": 52,
+      "sells": 30
+    },
+    "h1": {
+      "buys": 978,
+      "sells": 633
+    },
+    "h6": {
+      "buys": 2278,
+      "sells": 1582
+    },
+    "h24": {
+      "buys": 2278,
+      "sells": 1582
+    }
+  },
+  "volume": {
+    "h24": 193237.71,
+    "h6": 193237.71,
+    "h1": 60699.33,
+    "m5": 1957.45
+  },
+  "priceChange": {
+    "m5": 3.49,
+    "h1": 64.39,
+    "h6": 428,
+    "h24": 428
+  },
+  "liquidity": {
+    "usd": 33820.24,
+    "base": 91928280,
+    "quote": 179.96
+  },
+  "fdv": 180787,
+  "marketCap": 180787,
+  "pairCreatedAt": 1794144245000,
+  "info": {
+    "imageUrl": "https://cdn.dexscreener.com/cms/images/1fOmhQxmZLuUz3sE?width=800&height=800&quality=95&format=auto",
+    "header": "https://cdn.dexscreener.com/cms/images/0ur7THdStwX5Cdd7?width=1500&height=500&quality=95&format=auto",
+    "openGraph": "https://cdn.dexscreener.com/token-images/og/solana/DDDfDJGreM6pYbKEiB8NqkZ3RhgG9Q1zKK58SvcHpump?timestamp=1794149700000",
+    "websites": [],
+    "socials": [
+      {
+        "url": "https://x.com/i/communities/2036195672572174481",
+        "type": "twitter"
+      }
+    ]
+  },
+  "boosts": {
+    "active": 500
+  }
+}

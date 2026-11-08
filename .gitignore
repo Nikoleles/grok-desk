@@ -1,0 +1,13 @@
+.venv/
+.secrets/
+__pycache__/
+*.pyc
+.pytest_cache/
+desk.db
+desk.db-*
+logs/*.log
+logs/raw/
+output/
+reports/
+run/
+.DS_Store
