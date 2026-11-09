@@ -94,6 +94,33 @@ def spawn():
     )
 
 
+RESUME_GRACE_S = 150
+RESUME_POLL_S = 5
+
+
+def recheck(pid, db_path, action, line, grace_s=None, poll_s=None, sleep=None, clock=None):
+    """Re-read heartbeats for up to grace_s seconds; return the first ok result."""
+    import time
+    from datetime import datetime, timezone
+
+    from desk.db import DB
+
+    grace_s = RESUME_GRACE_S if grace_s is None else grace_s
+    poll_s = RESUME_POLL_S if poll_s is None else poll_s
+    sleep = sleep or time.sleep
+    clock = clock or (lambda: datetime.now(timezone.utc))
+    waited = 0.0
+    while waited < grace_s and pid and pid_alive(pid):
+        sleep(poll_s)
+        waited += poll_s
+        beats = DB(db_path).heartbeats()
+        action, new_line = assess(pid, beats, clock())
+        if action == "ok":
+            return "ok", f"{new_line} (caught up after {int(waited)}s)"
+        line = new_line
+    return action, line
+
+
 def main():
     from datetime import datetime, timezone
 
@@ -111,6 +138,12 @@ def main():
         print(f"ok pid={pid} starting")
         return
     action, line = assess(pid if pid and pid_alive(pid) else None, beats, now)
+    if action == "restart":
+        # The box can be paused between runs. On resume the wall clock jumps, so
+        # every heartbeat looks old until each agent's next tick (Scanner every
+        # 60s, Risk every 15s). Give a live process a grace window to catch up
+        # before calling it stuck; only restart if it is still stale after that.
+        action, line = recheck(pid, cfg.db_path, action, line)
     if action == "ok":
         print(line)
         return

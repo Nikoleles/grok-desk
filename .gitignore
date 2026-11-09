@@ -11,3 +11,8 @@ output/
 reports/
 run/
 .DS_Store
+
+# symlinks on the box (a trailing-slash pattern does not match a symlink)
+.venv
+.secrets
+logs/*.log.*
